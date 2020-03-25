@@ -32,6 +32,10 @@ Child firstly takes all the weights from one of its parents. For every weight of
 
 Selection algorithm used is Pool selection.
 
+## Graphics library
+
+Java Processing 3.5.4
+
 ## License
 
 This program is free.</br>
