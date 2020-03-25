@@ -78,7 +78,7 @@ public class GeneticAlgorithm {
 		Pipe closestPipe = null;
 		float distance = Float.MAX_VALUE;
 		for (Pipe pipe: pipes) {
-			float test = pipe.x - (BirdFactory.getSpawnX() + BirdFactory.getRadius());
+			float test = pipe.x + pipe.width/2 - BirdFactory.getSpawnX();
 			if (Math.abs(test) < Math.abs(distance)) {
 				distance = test;
 				closestPipe = pipe;
