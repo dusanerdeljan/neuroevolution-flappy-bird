@@ -9,6 +9,7 @@ import game.model.Pipe;
 import neuroevolution.genetic.GeneticAlgorithm;
 import neuroevolution.genetic.Genotype;
 import processing.core.PApplet;
+import processing.core.PImage;
 import util.Screen;
 
 public class FlappyBird extends PApplet {
@@ -21,6 +22,8 @@ public class FlappyBird extends PApplet {
 	int score = 0;
 	
 	int pipeSpawnRate;
+	
+	PImage backgroundImage;
 	
 	public void settings() {
 		size(1366, 768);
@@ -36,7 +39,7 @@ public class FlappyBird extends PApplet {
 	}
 	
 	public void setup() {
-		background(0, 0, 255);
+		backgroundImage = loadImage("resources/background.png");
 		surface.setTitle("Neuroevolution Flappy Bird");
 	}
 	
@@ -93,21 +96,23 @@ public class FlappyBird extends PApplet {
 	}
 	
 	private void clearScreen() {
-		background(0, 0, 255);
+		image(backgroundImage, 0, 0);
 	}
 
 	private void renderBird(Bird bird) {
 		if (!bird.isDead) {
-			stroke(255, 0, 0);
-			fill(255, 0, 0);
+			stroke(0);
+			strokeWeight(1);
+			fill(224, 227, 20);
 			ellipseMode(CENTER);
 			ellipse(bird.x, bird.y, bird.radius*2, bird.radius*2);	
 		}
 	}
 	
 	private void renderPipe(Pipe pipe) {
-		stroke(0, 255, 0);
-		fill(0, 255, 0);
+		stroke(0);
+		strokeWeight(1);
+		fill(9, 148, 46);
 		rect(pipe.x, 0, pipe.width, height - pipe.height - pipe.gap);
 		rect(pipe.x, 768 - pipe.height, pipe.width, pipe.height);
 	}
