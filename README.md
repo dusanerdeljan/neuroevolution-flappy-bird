@@ -31,3 +31,9 @@ Child firstly takes all the weights from one of its parents. For every weight of
 ### Selection
 
 Selection algorithm used is Pool selection.
+
+## License
+
+This program is free.</br>
+You can redistribute it and/or change it under the terms of **GNU General Public License version 3.0** (GPLv3). </br>
+You can find a copy of the license in the repository.
