@@ -56,11 +56,4 @@ public class Bird {
 	public void flap() {
 		this.velocity += this.flapForce;
 	}
-	
-	public void reset(float x) {
-		this.x = x;
-		this.y = Screen.HEIGHT / 2.0f;
-		this.velocity = 0f;
-		this.isDead = false;
-	}
 }

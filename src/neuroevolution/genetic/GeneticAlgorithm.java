@@ -7,6 +7,16 @@ import game.model.Pipe;
 import util.Screen;
 
 public class GeneticAlgorithm {
+	
+	private class PipeInfo {
+		public float distance;
+		public Pipe closestPipe;
+		
+		public PipeInfo(float distance, Pipe closestPipe) {
+			this.distance = distance;
+			this.closestPipe = closestPipe;
+		}
+	}
 
 	public Population population;
 	public int alive;
@@ -26,18 +36,10 @@ public class GeneticAlgorithm {
 	}
 	
 	public void updatePopulation(List<Pipe> pipes) {
-		Pipe closestPipe = null;
-		float distance = Float.MAX_VALUE;
-		for (Pipe pipe: pipes) {
-			float test = pipe.x - (BirdFactory.getSpawnX() + BirdFactory.getRadius());
-			if (Math.abs(test) < Math.abs(distance)) {
-				distance = test;
-				closestPipe = pipe;
-			}
-		}
+		PipeInfo data = getClosestPipe(pipes);
 		for (Genotype genome: this.population.genomes) {
 			if (!genome.bird.isDead) {
-				genome.bird.feed(closestPipe, distance);
+				genome.bird.feed(data.closestPipe, data.distance);
 				genome.bird.update();
 				if (genome.bird.y < genome.bird.radius || genome.bird.y > Screen.HEIGHT-genome.bird.radius) {
 					genome.bird.isDead = true;
@@ -70,5 +72,18 @@ public class GeneticAlgorithm {
 			}
 		}
 		return true;
+	}
+	
+	private PipeInfo getClosestPipe(List<Pipe> pipes) {
+		Pipe closestPipe = null;
+		float distance = Float.MAX_VALUE;
+		for (Pipe pipe: pipes) {
+			float test = pipe.x - (BirdFactory.getSpawnX() + BirdFactory.getRadius());
+			if (Math.abs(test) < Math.abs(distance)) {
+				distance = test;
+				closestPipe = pipe;
+			}
+		}
+		return new PipeInfo(distance, closestPipe);
 	}
 }

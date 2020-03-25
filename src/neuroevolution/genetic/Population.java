@@ -20,17 +20,17 @@ public class Population {
 		this.normalFitnessDistribution();
 		this.sortByFitness();
 		List<Genotype> nextGeneration = new ArrayList<Genotype>();
-		for (int i = 0; i < Math.round(elitism*this.genomes.size()); i++) {
+		int eliteCount = Math.round(elitism*this.genomes.size());
+		for (int i = 0; i < eliteCount; i++) {
 			nextGeneration.add(new Genotype(this.genomes.get(i)));
 		}
-		for (int i = 0; i < Math.round(randomness*this.genomes.size()); i++) {
+		int randomCount = Math.round(randomness*this.genomes.size());
+		for (int i = 0; i < randomCount; i++) {
 			NeuralNetwork.FlattenNetwork net  = this.genomes.get(0).bird.net.flatten();
 			for (int j = 1; j < net.weights.size(); j++) {
 				net.weights.set(j, (float) (Math.random()*2 - 1));
 			}
-			Genotype genome = new Genotype();
-			genome.bird.net.expand(net);
-			nextGeneration.add(genome);
+			nextGeneration.add(new Genotype(net));
 		}
 		// Pool selection
 		int max = 0;
@@ -46,9 +46,7 @@ public class Population {
 				}
 			}
 			max++;
-			if (max >= this.genomes.size()-1) {
-				max = 0;
-			}
+			max = max >= this.genomes.size()-1 ? 0 : max;
 		}
 	}
 

@@ -14,10 +14,9 @@ public class BirdFactory {
 		return new Bird(Screen.WIDTH/5.0f, Screen.HEIGHT/2.0f, 20);
 	}
 	
-	// TODO: Optimize this
-	public static Bird getBird(NeuralNetwork net) {
+	public static Bird getBird(NeuralNetwork.FlattenNetwork net) {
 		Bird bird = getBird();
-		bird.net.expand(net.flatten());
+		bird.net.expand(net);
 		return bird;
 	}
 	

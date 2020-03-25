@@ -17,8 +17,13 @@ public class Genotype {
 		this.fitness = 0;
 	}
 	
+	public Genotype(NeuralNetwork.FlattenNetwork net) {
+		this.bird = BirdFactory.getBird(net);
+		this.fitness = 0;
+	}
+	
 	public Genotype(Genotype genome) {
-		this.bird = BirdFactory.getBird(genome.bird.net);
+		this.bird = BirdFactory.getBird(genome.bird.net.flatten());
 		this.fitness = 0;
 	}
 	
@@ -37,10 +42,7 @@ public class Genotype {
 					childNet.weights.set(i, (float) Math.random()*2*mutationStdDev - mutationStdDev);
 				}
 			}
-			// TODO: Optimize this
-			Genotype genome = new Genotype();
-			genome.bird.net.expand(childNet);
-			children.add(genome);
+			children.add(new Genotype(childNet));
 		}
 		return children;
 	}
