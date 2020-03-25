@@ -1,6 +1,8 @@
 # neuroevolution-flappy-bird
 Using artificial neural network and genetic algorithm to train bot to play Flappy Bird.
 
+<img src="resources/screenshot.png" width="100%">
+
 ## Neural network architecture
 
 Neural network used is simple neural network with 3 inputs, 8 hidden neurons and 2 output neurons.<br/>
@@ -35,6 +37,12 @@ Selection algorithm used is Pool selection.
 ## Graphics library
 
 Java Processing 3.5.4
+
+## References
+
+ * https://www.youtube.com/watch?v=aeWmdojEJf0
+ * https://www.youtube.com/watch?v=WSW-5m8lRMs
+ * https://towardsdatascience.com/neural-network-plays-flappy-bird-e585b1e49d97
 
 ## License
 
