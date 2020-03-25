@@ -43,7 +43,7 @@ public class Bird {
 	public void feed(Pipe closestPipe, float distance) {
 		if (closestPipe != null && !this.isDead) {
 			float[] inputs = {
-				(distance + closestPipe.width / 2) / Screen.WIDTH,
+				distance / Screen.WIDTH,
 				(this.y + this.radius - (Screen.HEIGHT - closestPipe.height)) / Screen.HEIGHT,
 				((Screen.HEIGHT - closestPipe.gap - closestPipe.height) - this.y - this.radius) / Screen.HEIGHT,
 			};
