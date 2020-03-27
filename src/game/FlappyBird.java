@@ -41,6 +41,7 @@ public class FlappyBird extends PApplet {
 	float pipeSwapnX;
 	float pipeStart;
 	int score = 0;
+	int highscore = 0;
 	
 	int pipeSpawnRate;
 	
@@ -84,20 +85,16 @@ public class FlappyBird extends PApplet {
 		}
 	}
 	
-	private void drawGenerationInfo() {
-		textSize(32);
-		fill(255);
-		text("Score: " + agent.getBestScore(), 20, 50);
-		text("Generation: " + agent.generation, 20, 100);
-		text("Alive: " + agent.alive + " / " + agent.populationSize, 20, 150);
-	}
-	
 	private void checkCollision(Pipe pipe, Bird bird) {
 		if (bird.isDead)
 			return;
 		if (pipe.checkBirdCollision(bird)) {
 			bird.isDead = true;
 			agent.alive--;
+		} else {
+			if (pipe.checkPass(bird)) {
+				bird.gameScore++;
+			}
 		}
 	}
 	
@@ -121,6 +118,17 @@ public class FlappyBird extends PApplet {
 	
 	private void clearScreen() {
 		image(backgroundImage, 0, 0);
+	}
+	
+	private void drawGenerationInfo() {
+		textSize(32);
+		fill(255);
+		score = agent.getBestScore();
+		highscore = score > highscore ? score : highscore;
+		text("Score: " + score, 20, 50);
+		text("Generation: " + agent.generation, 20, 100);
+		text("Alive: " + agent.alive + " / " + agent.populationSize, 20, 150);
+		text("Highscore: " + highscore, 20, 200);
 	}
 
 	private void renderBird(Bird bird) {

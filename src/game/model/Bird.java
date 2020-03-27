@@ -33,15 +33,17 @@ public class Bird {
 	public float flapForce;
 	public boolean isDead = false;
 	public int score;
+	public int gameScore;
 	
 	public NeuralNetwork net;
 	
 	private Bird() {
-		this.velocity = 0f;
-		this.gravity = 10;
+		this.velocity = 0.4f;
+		this.gravity = 0f;
 		this.airDrag = 0.9f;
-		this.flapForce = -12f;
+		this.flapForce = -6f;
 		this.isDead = false;
+		this.gameScore = 0;
 		this.score = 0;
 	}
 	
@@ -63,9 +65,9 @@ public class Bird {
 	
 	public void update() {
 		this.score++;
-		this.velocity *= airDrag;
-		this.velocity += gravity;
-		this.y += velocity;
+		//this.velocity *= airDrag;
+		gravity += velocity;
+		this.y += gravity;
 	}
 	
 	public void feed(Pipe closestPipe, float distance) {
@@ -82,6 +84,6 @@ public class Bird {
 	}
 	
 	public void flap() {
-		this.velocity += this.flapForce;
+		gravity = flapForce;
 	}
 }

@@ -20,18 +20,20 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 package game.model;
 
+import java.util.HashMap;
+
 import util.Screen;
 
 public class Pipe {
 	
 	public float height;
 	public float x;
-	public float velocity = -3f;
+	public float velocity = -4f;
 	public float width = 60f;
 	
 	public final float gap = 180;
 	
-	private boolean birdHasPassed = false;
+	private HashMap<Bird, Boolean> birdHasPassed = new HashMap<Bird, Boolean>();
 	
 	public Pipe(float x, float height) {
 		this.x = x;
@@ -53,8 +55,9 @@ public class Pipe {
 	}
 	
 	public boolean checkPass(Bird bird) {
-		if (bird.x - bird.radius > this.x + this.width && !birdHasPassed) {
-			birdHasPassed = true;
+		boolean birdPass = this.birdHasPassed.containsKey(bird);
+		if (bird.x - bird.radius > this.x + this.width && !birdPass) {
+			this.birdHasPassed.put(bird, true);
 			return true;
 		}
 		return false;

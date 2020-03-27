@@ -78,8 +78,8 @@ public class GeneticAlgorithm {
 	public int getBestScore() {
 		int best = 0;
 		for (Genotype genome: this.population.genomes) {
-			if (genome.bird.score > best) {
-				best = genome.bird.score;
+			if (genome.bird.gameScore > best) {
+				best = genome.bird.gameScore;
 			}
 		}
 		return best;
