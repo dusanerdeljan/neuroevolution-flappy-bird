@@ -37,10 +37,10 @@ public class Bird {
 	public NeuralNetwork net;
 	
 	private Bird() {
-		this.velocity = -8f;
-		this.gravity = 20;
+		this.velocity = 0f;
+		this.gravity = 10;
 		this.airDrag = 0.9f;
-		this.flapForce = -26f;
+		this.flapForce = -12f;
 		this.isDead = false;
 		this.score = 0;
 	}

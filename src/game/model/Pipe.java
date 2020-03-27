@@ -26,7 +26,7 @@ public class Pipe {
 	
 	public float height;
 	public float x;
-	public float velocity = -5f;
+	public float velocity = -3f;
 	public float width = 60f;
 	
 	public final float gap = 180;
