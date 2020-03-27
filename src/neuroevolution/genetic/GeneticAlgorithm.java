@@ -24,6 +24,7 @@ import java.util.List;
 
 import game.factory.BirdFactory;
 import game.model.Pipe;
+import neuroevolution.neuralnetwork.NeuralNetwork;
 import util.Screen;
 
 public class GeneticAlgorithm {
@@ -49,8 +50,11 @@ public class GeneticAlgorithm {
 	public float randomness = 0.2f;
 	public int childCount = 1;
 	
+	private NeuralNetwork bestGenome;
+	
 	public GeneticAlgorithm() {
 		this.population = new Population(this.populationSize);
+		this.bestGenome = this.population.genomes.get(0).bird.net;
 		this.alive = this.populationSize;
 		this.generation = 1;
 	}
@@ -73,6 +77,11 @@ public class GeneticAlgorithm {
 		this.alive = this.populationSize;
 		this.generation++;
 		this.population.evolve(this.elitism, this.randomness, this.mutationRate, this.mutationStdDev, this.childCount);
+		this.bestGenome = this.population.genomes.get(0).bird.net;
+	}
+	
+	public NeuralNetwork getBestGenome() {
+		return this.bestGenome;
 	}
 	
 	public int getBestScore() {

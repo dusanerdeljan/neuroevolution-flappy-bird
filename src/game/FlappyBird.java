@@ -29,6 +29,9 @@ import game.model.Bird;
 import game.model.Pipe;
 import neuroevolution.genetic.GeneticAlgorithm;
 import neuroevolution.genetic.Genotype;
+import neuroevolution.neuralnetwork.Layer;
+import neuroevolution.neuralnetwork.NeuralNetwork;
+import neuroevolution.neuralnetwork.Neuron;
 import processing.core.PApplet;
 import processing.core.PImage;
 import util.Screen;
@@ -55,7 +58,7 @@ public class FlappyBird extends PApplet {
 		this.pipeStart = width / 3f;
 		this.agent = new GeneticAlgorithm();
 		this.pipes = new LinkedList<Pipe>();
-		initPipes();
+		this.initPipes();
 		this.pipeSpawnRate = Math.abs(Math.round(pipeStart / this.pipes.get(0).velocity));
 	}
 	
@@ -69,6 +72,7 @@ public class FlappyBird extends PApplet {
 		agent.population.genomes.forEach(genome -> renderBird(genome.bird));
 		pipes.forEach(pipe -> renderPipe(pipe));
 		drawGenerationInfo();
+		renderNeuralNetwork();
 		pipes.removeIf(pipe -> pipe.isInvisible());
 		for (Genotype genome: this.agent.population.genomes) {
 			for (Pipe pipe: this.pipes) {
@@ -129,6 +133,51 @@ public class FlappyBird extends PApplet {
 		text("Generation: " + agent.generation, 20, 100);
 		text("Alive: " + agent.alive + " / " + agent.populationSize, 20, 150);
 		text("Highscore: " + highscore, 20, 200);
+	}
+	
+	private void renderNeuralNetwork() {
+		NeuralNetwork net = this.agent.getBestGenome();
+		int beginx = 1100;
+		int beginy = 20;
+		int yspan = 300;
+		int layerSpace = 80;
+		int neuronSpace = 10;
+		int layerWidth = 25;
+		ellipseMode(CENTER);
+		for (int i = 1; i < net.layers.size(); i++) {
+			Layer prevLayer = net.layers.get(i-1);
+			Layer layer = net.layers.get(i);
+			int totalLayerHeight = layer.neurons.size()*layerWidth + (layer.neurons.size()-1)*neuronSpace;
+			int layerBegin = beginy + (yspan - totalLayerHeight)/2;
+			int totalPrevLayerHeight = prevLayer.neurons.size()*layerWidth + (prevLayer.neurons.size()-1)*neuronSpace;
+			int prevLayerBegin = beginy + (yspan - totalPrevLayerHeight)/2;
+			// Draw current layer
+			for (int j = 0; j < layer.neurons.size(); j++) {
+				// Draw weights for each neuron
+				Neuron neuron = layer.neurons.get(j);
+				for (int k = 0; k < neuron.weights.size(); k++) {
+					float weight = neuron.weights.get(k);
+					strokeWeight(2*Math.abs(weight));
+					if (weight >= 0) {
+						stroke(0, 0, 255);
+					} else {
+						stroke(255, 0, 0);
+					}
+					line(beginx + (i-1)*(layerWidth+layerSpace), prevLayerBegin + k*(layerWidth + neuronSpace), beginx + i*(layerWidth+layerSpace), layerBegin + j*(neuronSpace + layerWidth));
+				}
+				fill(255);
+				strokeWeight(1);
+				stroke(0);
+				ellipse(beginx + i*(layerWidth+layerSpace), layerBegin + j*(neuronSpace + layerWidth), layerWidth, layerWidth);
+			}
+			// Draw previous layer
+			for (int j = 0; j < prevLayer.neurons.size(); j++) {
+				fill(255);
+				strokeWeight(1);
+				stroke(0);
+				ellipse(beginx + (i-1)*(layerWidth+layerSpace), prevLayerBegin + j*(neuronSpace + layerWidth), layerWidth, layerWidth);
+			}
+		}
 	}
 
 	private void renderBird(Bird bird) {
