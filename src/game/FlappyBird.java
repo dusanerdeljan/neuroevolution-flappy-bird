@@ -23,6 +23,7 @@ package game;
 import java.util.LinkedList;
 import java.util.List;
 
+import game.factory.BirdFactory;
 import game.factory.PipeFactory;
 import game.model.Bird;
 import game.model.Pipe;
@@ -48,13 +49,12 @@ public class FlappyBird extends PApplet {
 	public void settings() {
 		size(1366, 768);
 		Screen.setDimensions(width, height);
+		BirdFactory.init(Screen.WIDTH/5.0f, Screen.HEIGHT/2.0f, 20);
 		this.pipeSwapnX = width;
 		this.pipeStart = width / 3f;
 		this.agent = new GeneticAlgorithm();
 		this.pipes = new LinkedList<Pipe>();
-		spawnPipe(pipeStart);
-		spawnPipe(2*pipeStart);
-		spawnPipe(3*pipeStart);
+		initPipes();
 		this.pipeSpawnRate = Math.abs(Math.round(pipeStart / this.pipes.get(0).velocity));
 	}
 	
@@ -103,12 +103,16 @@ public class FlappyBird extends PApplet {
 	
 	private void reset() {
 		pipes.clear();
-		spawnPipe(pipeStart);
-		spawnPipe(2*pipeStart);
-		spawnPipe(3*pipeStart);
+		initPipes();
 		frameCount = 0;
 		score = 0;
 		agent.evolvePopulation();
+	}
+	
+	private void initPipes() {
+		spawnPipe(pipeStart);
+		spawnPipe(2*pipeStart);
+		spawnPipe(3*pipeStart);
 	}
 	
 	private void spawnPipe(float x) {

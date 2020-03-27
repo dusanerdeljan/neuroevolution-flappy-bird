@@ -22,29 +22,36 @@ package game.factory;
 
 import game.model.Bird;
 import neuroevolution.neuralnetwork.NeuralNetwork;
-import util.Screen;
 
 public class BirdFactory {
+	
+	private static float spawnX;
+	private static float spawnY;
+	private static float radius;
 
 	private BirdFactory() {
 		
 	}
 	
+	public static void init(float x, float y, float r) {
+		spawnX = x;
+		spawnY = y;
+		radius = r;
+	}
+	
 	public static Bird getBird() {
-		return new Bird(Screen.WIDTH/5.0f, Screen.HEIGHT/2.0f, 20);
+		return new Bird(spawnX, spawnY, radius);
 	}
 	
 	public static Bird getBird(NeuralNetwork.FlattenNetwork net) {
-		Bird bird = getBird();
-		bird.net.expand(net);
-		return bird;
+		return new Bird(spawnX, spawnY, radius, net);
 	}
 	
 	public static float getSpawnX() {
-		return Screen.WIDTH/5.0f;
+		return spawnX;
 	}
 	
 	public static float getRadius() {
-		return 20f;
+		return spawnY;
 	}
 }

@@ -27,8 +27,8 @@ import game.model.Pipe;
 public class PipeFactory {
 	
 	private static Random random = new Random();
-	private static float minHeight = 100f;
-	private static float maxHeight = 500;
+	private static float minHeight = 200f;
+	private static float maxHeight = 500f;
 	
 	private PipeFactory() {
 		

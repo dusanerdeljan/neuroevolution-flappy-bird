@@ -63,8 +63,8 @@ public class NeuralNetwork {
 		return net;
 	}
 	
-	public void expand(FlattenNetwork net) {
-		this.layers.clear();
+	public static NeuralNetwork expand(FlattenNetwork net) {
+		NeuralNetwork nn = new NeuralNetwork();
 		int prevInput = 0;
 		int weightIndex = 0;
 		for (int neuronCount: net.neurons) {
@@ -75,8 +75,9 @@ public class NeuralNetwork {
 				}
 			}
 			prevInput = neuronCount;
-			this.layers.add(layer);
+			nn.layers.add(layer);
 		}
+		return nn;
 	}
 	
 	public float[] eval(float... inputs) {

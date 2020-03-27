@@ -53,6 +53,14 @@ public class Bird {
 		this.net = new NeuralNetwork(3, 8, 2);
 	}
 	
+	public Bird(float x, float y, float r, NeuralNetwork.FlattenNetwork net) {
+		this();
+		this.x = x;
+		this.y = y;
+		this.radius = r;
+		this.net = NeuralNetwork.expand(net);
+	}
+	
 	public void update() {
 		this.score++;
 		this.velocity *= airDrag;
