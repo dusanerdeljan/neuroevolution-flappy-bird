@@ -34,6 +34,12 @@ Child firstly takes all the weights from one of its parents. For every weight of
 
 Selection algorithm used is Pool selection.
 
+## Neural network visualization
+
+ * Weight of the line indicates how strong the net weight is
+ * Blue means weight is positive
+ * Red means weight is negative
+
 ## Graphics library
 
 Java Processing 3.5.4: https://processing.org/
