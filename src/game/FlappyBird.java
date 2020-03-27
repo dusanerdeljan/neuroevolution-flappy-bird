@@ -45,6 +45,9 @@ public class FlappyBird extends PApplet {
 	float pipeStart;
 	int score = 0;
 	int highscore = 0;
+	int tickCounter = 0;
+	int speed = 1;
+	int maxSpeed = 10;
 	
 	int pipeSpawnRate;
 	
@@ -68,24 +71,37 @@ public class FlappyBird extends PApplet {
 	}
 	
 	public void draw() {
-		clearScreen();
-		agent.population.genomes.forEach(genome -> renderBird(genome.bird));
-		pipes.forEach(pipe -> renderPipe(pipe));
-		drawGenerationInfo();
-		renderNeuralNetwork();
-		pipes.removeIf(pipe -> pipe.isInvisible());
-		for (Genotype genome: this.agent.population.genomes) {
-			for (Pipe pipe: this.pipes) {
-				checkCollision(pipe, genome.bird);
+		for (int i = 0; i < speed; i++) {
+			tickCounter++;
+			clearScreen();
+			agent.population.genomes.forEach(genome -> renderBird(genome.bird));
+			pipes.forEach(pipe -> renderPipe(pipe));
+			drawGenerationInfo();
+			renderNeuralNetwork();
+			pipes.removeIf(pipe -> pipe.isInvisible());
+			for (Genotype genome: this.agent.population.genomes) {
+				for (Pipe pipe: this.pipes) {
+					checkCollision(pipe, genome.bird);
+				}
+			}
+			if (tickCounter % pipeSpawnRate == 0) {
+				spawnPipe(this.pipeSwapnX);
+			}
+			pipes.forEach(pipe -> pipe.update());
+			agent.updatePopulation(pipes);
+			if (agent.populationDead()) {
+				reset();
 			}
 		}
-		if (frameCount % pipeSpawnRate == 0) {
-			spawnPipe(this.pipeSwapnX);
-		}
-		pipes.forEach(pipe -> pipe.update());
-		agent.updatePopulation(pipes);
-		if (agent.populationDead()) {
-			reset();
+	}
+	
+	public void keyPressed() {
+		if (key == CODED) {
+			if (keyCode == UP) {
+				speed = min(maxSpeed, ++speed);
+			} else if (keyCode == DOWN) {
+				speed = max(1, --speed);
+			}
 		}
 	}
 	
@@ -106,6 +122,7 @@ public class FlappyBird extends PApplet {
 		pipes.clear();
 		initPipes();
 		frameCount = 0;
+		tickCounter = 0;
 		score = 0;
 		agent.evolvePopulation();
 	}
@@ -133,6 +150,7 @@ public class FlappyBird extends PApplet {
 		text("Generation: " + agent.generation, 20, 100);
 		text("Alive: " + agent.alive + " / " + agent.populationSize, 20, 150);
 		text("Highscore: " + highscore, 20, 200);
+		text("Speed: " + speed, 20, 250);
 	}
 	
 	private void renderNeuralNetwork() {
