@@ -29,7 +29,7 @@ import util.Screen;
 
 public class GeneticAlgorithm {
 	
-	private class PipeInfo {
+	public class PipeInfo {
 		public float distance;
 		public Pipe closestPipe;
 		
@@ -51,6 +51,7 @@ public class GeneticAlgorithm {
 	public int childCount = 1;
 	
 	private NeuralNetwork bestGenome;
+	private PipeInfo closestPipeInfo;
 	
 	public GeneticAlgorithm() {
 		this.population = new Population(this.populationSize);
@@ -60,10 +61,10 @@ public class GeneticAlgorithm {
 	}
 	
 	public void updatePopulation(List<Pipe> pipes) {
-		PipeInfo data = getClosestPipe(pipes);
+		getClosestPipe(pipes);
 		for (Genotype genome: this.population.genomes) {
 			if (!genome.bird.isDead) {
-				genome.bird.feed(data.closestPipe, data.distance);
+				genome.bird.feed(this.closestPipeInfo.closestPipe, this.closestPipeInfo.distance);
 				genome.bird.update();
 				if (genome.bird.y < genome.bird.radius || genome.bird.y > Screen.HEIGHT-genome.bird.radius) {
 					genome.bird.isDead = true;
@@ -82,6 +83,10 @@ public class GeneticAlgorithm {
 	
 	public NeuralNetwork getBestGenome() {
 		return this.bestGenome;
+	}
+	
+	public PipeInfo getClosestPipeInfo() {
+		return this.closestPipeInfo;
 	}
 	
 	public int getBestScore() {
@@ -103,7 +108,7 @@ public class GeneticAlgorithm {
 		return true;
 	}
 	
-	private PipeInfo getClosestPipe(List<Pipe> pipes) {
+	private void getClosestPipe(List<Pipe> pipes) {
 		Pipe closestPipe = null;
 		float distance = Float.MAX_VALUE;
 		for (Pipe pipe: pipes) {
@@ -113,6 +118,6 @@ public class GeneticAlgorithm {
 				closestPipe = pipe;
 			}
 		}
-		return new PipeInfo(distance, closestPipe);
+		this.closestPipeInfo = new PipeInfo(distance, closestPipe);
 	}
 }

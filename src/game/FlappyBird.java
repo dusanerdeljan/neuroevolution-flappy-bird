@@ -74,8 +74,8 @@ public class FlappyBird extends PApplet {
 		for (int i = 0; i < speed; i++) {
 			tickCounter++;
 			clearScreen();
-			agent.population.genomes.forEach(genome -> renderBird(genome.bird));
 			pipes.forEach(pipe -> renderPipe(pipe));
+			agent.population.genomes.forEach(genome -> renderBird(genome.bird));
 			drawGenerationInfo();
 			renderNeuralNetwork();
 			pipes.removeIf(pipe -> pipe.isInvisible());
@@ -150,7 +150,7 @@ public class FlappyBird extends PApplet {
 		text("Generation: " + agent.generation, 20, 100);
 		text("Alive: " + agent.alive + " / " + agent.populationSize, 20, 150);
 		text("Highscore: " + highscore, 20, 200);
-		text("Speed: " + speed, 20, 250);
+		text("Speed: " + speed + "x", 20, 250);
 	}
 	
 	private void renderNeuralNetwork() {
@@ -200,6 +200,15 @@ public class FlappyBird extends PApplet {
 
 	private void renderBird(Bird bird) {
 		if (!bird.isDead) {
+			GeneticAlgorithm.PipeInfo pipeInfo = this.agent.getClosestPipeInfo();
+			if (pipeInfo != null && pipeInfo.closestPipe != null) {
+				Pipe pipe = pipeInfo.closestPipe;
+				stroke(255, 0, 0);
+				strokeWeight(2);
+				line(bird.x, bird.y, pipe.x + pipe.width/2, height - pipe.height - pipe.gap);
+				line(bird.x, bird.y, pipe.x + pipe.width/2, height - pipe.height - pipe.gap/2);
+				line(bird.x, bird.y, pipe.x + pipe.width/2, height - pipe.height);
+			}
 			stroke(0);
 			strokeWeight(1);
 			fill(224, 227, 20);
